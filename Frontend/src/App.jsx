@@ -8,11 +8,12 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
+import Navbar1 from './components/Navbar1';
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path='/' element={<Navbar />}>
+      <Route path='/' element={<Navbar1 />}>
         <Route path='/' element={<Home />} />
         <Route path='/about-us' element={<About />} />
         <Route path='/profile-page' element={<Profile/>}/>

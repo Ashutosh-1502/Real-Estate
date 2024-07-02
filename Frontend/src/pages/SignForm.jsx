@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from "react-icons/fc";
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import api from '../services/API_Handling';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../App.css';
 
 function SignForm() {
@@ -15,12 +19,28 @@ function SignForm() {
         // confirmPassword : yup.string().oneOf([yup.ref("password"),null]).required()
     })
 
-    const { register, handleSubmit, formState : {errors} } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const Navigate = useNavigate();
+    const notify = (message) => toast(message);
+    let message = "";
 
     const signup = (data) => {
-        console.log(data);
+        setIsLoading(true);
+        api.post('/api/auth/sign-up', data)
+            .then((response) => {
+                message = "Login successfull";
+                toast.success(message);
+                setTimeout(() => Navigate('/'), 3000);
+            })
+            .catch((e) => {
+                setIsLoading(false);
+                message = "Username Must be unique";
+                toast.error(message);
+                setIsLoading(false);
+            });
     }
 
     return (
@@ -35,9 +55,21 @@ function SignForm() {
                 </div>
                 <div className='divider'>or</div>
                 <div>
-                    <Button label="Sign in With Google" className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[2px]' logo={<FcGoogle className='me-3 text-3xl' />} />
+                    <Button label="Sign in With Google" className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[2px]' logo={<FcGoogle className='me-3 text-3xl' />} isLoading={isLoading} />
                 </div>
             </form>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition:Bounce/>
         </div>
     )
 }

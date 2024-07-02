@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRouter from './routes/userRoutes.js';
 import authRouter from './routes/authRoute.js'
+import cookieParser from 'cookie-parser';
 const app = express();
 
 dotenv.config({ path: './config.env' });
@@ -14,6 +15,7 @@ mongoose.connect(DB_CONNECTION)
     .catch(err => console.log(`Connection Failed : ${err}`))
 
 app.use(express.json());
+app.use(cookieParser({}))
 
 app.use('/api/auth', authRouter);
 

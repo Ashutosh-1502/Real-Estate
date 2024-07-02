@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Button({label , className = "" , logo = ""}) {
+function Button({label , className = "" , logo = "" , isLoading = false }) {
   return (
     <div>
-      <button className={className}>{logo}{label}</button>
+      <button disabled = {isLoading} className={className}>{logo}{label}</button>
     </div>
   )
 }
