@@ -1,0 +1,38 @@
+.active{
+    background-color: rgba(0, 109, 119,0.7);
+    color: white !important;
+    border-radius: 5px;
+}
+/* 
+ .sigup-form form{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+} */
+
+.sigup-form form div input{
+    background-color: #fff;
+    border: 0.1px solid rgb(148, 144, 144);
+    outline: none;
+    border-radius: 0.125rem;
+    font-weight: 400 !important;
+} 
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+    color: rgba(0, 0, 0,0.4);
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(0, 0, 0,0.4);
+  }
+  .divider:not(:empty)::before {
+    margin-right: .25em;
+  }
+  .divider:not(:empty)::after {
+    margin-left: .25em;
+  }
