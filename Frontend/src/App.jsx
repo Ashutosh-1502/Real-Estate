@@ -6,7 +6,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Sign from './pages/Sign';
 import SignupAndSignIn from './pages/SignupAndSignIn';
-// import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Navbar1 from './components/Navbar1';
 

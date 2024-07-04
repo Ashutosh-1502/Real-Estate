@@ -1,8 +1,11 @@
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { signInSuccess } from '../Redux/userSlice.js';
 import 'react-toastify/dist/ReactToastify.css';
 import api from './API_Handling';
 
 const useAuth = () => {
+    const dispatch = useDispatch();
     return (data, ApiEndpoint, Navigate) => {
         const notify = (message) => toast(message);
         let message = "";
@@ -12,6 +15,7 @@ const useAuth = () => {
                 message = response.data.message;
                 toast.success(message);
                 setTimeout(() => Navigate('/'), 3000);
+                dispatch(signInSuccess(response?.data?.existingUser));
             })
             .catch((e) => {
                 message = e.response?.data.message;
