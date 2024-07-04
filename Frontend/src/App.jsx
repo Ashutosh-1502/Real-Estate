@@ -4,8 +4,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 //importing all the components
 import Home from './pages/Home';
 import About from './pages/About';
-import Signin from './pages/Signin';
-import Signup from './pages/Signup';
+import Sign from './pages/Sign';
+import SignupAndSignIn from './pages/SignupAndSignIn';
+// import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Navbar1 from './components/Navbar1';
 
@@ -15,16 +16,16 @@ function App() {
       <Route path='/' element={<Navbar1 />}>
         <Route path='/' element={<Home />} />
         <Route path='/about-us' element={<About />} />
-        <Route path='/profile-page' element={<Profile/>}/>
-        <Route path='/auth/sign-in' element={<Signin />} />
-        <Route path='/auth/sign-up' element={<Signup />} />
-        <Route path='*' element={<Error/>}/>
+        <Route path='/profile-page' element={<Profile />} />
+        <Route path='/auth/sign-in' element={<Sign childComponent={<SignupAndSignIn type='login' />} type='login' />} />
+        <Route path='/auth/sign-up' element={<Sign childComponent={<SignupAndSignIn type='sign-up' />} type='sign-up' />} />
+        <Route path='*' element={<Error />} />
       </Route>
     )
   )
   return (
     <>
-    <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </>
   )
 }
