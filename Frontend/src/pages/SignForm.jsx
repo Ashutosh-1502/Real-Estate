@@ -31,13 +31,15 @@ function SignForm() {
         setIsLoading(true);
         api.post('/api/auth/sign-up', data)
             .then((response) => {
-                message = "Login successfull";
+                console.log(response.data);
+                message = response.data.message;
                 toast.success(message);
                 setTimeout(() => Navigate('/'), 3000);
             })
             .catch((e) => {
+                console.log(e.response);
                 setIsLoading(false);
-                message = "Username Must be unique";
+                message = e.response?.data.message;
                 toast.error(message);
                 setIsLoading(false);
             });
@@ -69,7 +71,7 @@ function SignForm() {
                 draggable
                 pauseOnHover
                 theme="dark"
-                transition:Bounce/>
+                transition:Bounce />
         </div>
     )
 }

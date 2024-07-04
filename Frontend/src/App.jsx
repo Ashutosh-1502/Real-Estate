@@ -7,7 +7,6 @@ import About from './pages/About';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
-import Navbar from './components/Navbar';
 import Navbar1 from './components/Navbar1';
 
 function App() {
