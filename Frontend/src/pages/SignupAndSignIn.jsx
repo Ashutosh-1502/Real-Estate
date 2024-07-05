@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from "react-icons/fc";
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ToastContainer,} from 'react-toastify';
+import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useAuth from '../services/HandleAuth';
+import { useAuth, useGoogleAuth } from '../services/HandleAuth';
 import '../App.css';
 
 function SignupAndSignIn({ type }) {
     const handleAuth = useAuth();
+    const googleAuth = useGoogleAuth();
     const schema = yup.object().shape({
         email: yup.lazy(() => {             //Lazy method conditionally check if type is sign-up and then apply validation
             if (type === 'sign-up') {
@@ -24,8 +24,7 @@ function SignupAndSignIn({ type }) {
         password: yup.string().min(8).max(20).required("Password is required"),
         // confirmPassword : yup.string().oneOf([yup.ref("password"),null]).required()
     })
-    
-    const Navigate = useNavigate();
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
@@ -33,7 +32,9 @@ function SignupAndSignIn({ type }) {
 
     return (
         <div className='sigup-form mt-5'>
-            <form className='flex flex-col gap-5 font-medium' onSubmit={handleSubmit((data) => {handleAuth(data , ApiEndpoint , Navigate)})}>
+            <form className='flex flex-col gap-5 font-medium'
+                onSubmit={handleSubmit((data) => { handleAuth(data, ApiEndpoint) })}>
+
                 {type === 'sign-up' ?
                     <Input label="Email" type='email' placeholder='Enter Email Address' {...register("email")} /> :
                     null
@@ -46,7 +47,12 @@ function SignupAndSignIn({ type }) {
                 </div>
                 <div className='divider'>or</div>
                 <div>
-                    <Button label="Sign in With Google" className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[2px]' logo={<FcGoogle className='me-3 text-3xl' />} />
+                    <button
+                        onClick={googleAuth}
+                        type='button'
+                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[2px]'>
+                        <FcGoogle className='me-3 text-3xl' />Sign in With Google
+                    </button>
                 </div>
             </form>
             <ToastContainer

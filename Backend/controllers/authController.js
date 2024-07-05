@@ -5,8 +5,8 @@ import ExpressError from '../utilities/expressError.js';
 
 const signUp = async (req, res, next) => {
     const { username, email, password } = req.body;
-    if(!username || !email || !password)
-        return next(new ExpressError("Please fill all the required field" , 404 ));
+    if (!username || !email || !password)
+        return next(new ExpressError("Please fill all the required field", 404));
     const hashedPassword = bcrypt.hashSync(password, 12);
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
@@ -21,10 +21,10 @@ const signUp = async (req, res, next) => {
 }
 
 const signin = async (req, res, next) => {
-    const { username , password } = req.body;
+    const { username, password } = req.body;
     const existingUser = await User.findOne({ username });
     if (!existingUser || !bcrypt.compareSync(password, existingUser.password))
-        return next(new ExpressError("Username or password is incorrect" , 401));
+        return next(new ExpressError("Username or password is incorrect", 401));
 
     const token = setUser(existingUser);
     existingUser.password = null;
@@ -36,4 +36,31 @@ const signin = async (req, res, next) => {
     })
 }
 
-export { signUp, signin };
+const googleAuth = async (req, res, next) => {
+    const { username, email, photo } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        const token = setUser(existingUser);
+        existingUser.password = null;
+        return res.cookie('token', cookieOption).status(201).json({
+            success: true,
+            message: 'Login successful',
+            existingUser,
+            token
+        })
+    }
+    const generatedPassword = Math.random().toString(36).slice(-8);
+    const hashedPassword = bcrypt.hashSync(generatedPassword, 12);
+    const newGoogleUser = new User({ email, username, password: hashedPassword, avatar: photo });
+    await newGoogleUser.save();
+    const token = setUser(newGoogleUser);
+    existingUser.password = null;
+    res.cookie('token', cookieOption).status(201).json({
+        success: true,
+        message: 'Login Successful',
+        newGoogleUser,
+        token
+    })
+}
+
+export { signUp, signin, googleAuth };

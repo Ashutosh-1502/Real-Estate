@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Button({label , className = "" , logo = "" }) {
+function Button({ label, className = "" }) {
   return (
     <div>
-      <button className={className}>{logo}{label}</button>
+      <button className={className}>{label}</button>
     </div>
   )
 }
