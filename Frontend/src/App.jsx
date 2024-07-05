@@ -8,6 +8,7 @@ import Sign from './pages/Sign';
 import SignupAndSignIn from './pages/SignupAndSignIn';
 import Profile from './pages/Profile';
 import Navbar1 from './components/Navbar1';
+import { ProtectedProfile, ProtectedSignInAndSignup } from './components/ProtectedRoute';
 
 function App() {
   const router = createBrowserRouter(
@@ -15,9 +16,19 @@ function App() {
       <Route path='/' element={<Navbar1 />}>
         <Route path='/' element={<Home />} />
         <Route path='/about-us' element={<About />} />
-        <Route path='/profile-page' element={<Profile />} />
-        <Route path='/auth/sign-in' element={<Sign childComponent={<SignupAndSignIn type='login' />} type='login' />} />
-        <Route path='/auth/sign-up' element={<Sign childComponent={<SignupAndSignIn type='sign-up' />} type='sign-up' />} />
+        <Route element={<ProtectedProfile />}>
+          <Route path='/profile-page' element={<Profile />} />
+        </Route>
+        <Route element={<ProtectedSignInAndSignup />}>
+          <Route path='/auth/sign-in' element={
+            <Sign childComponent={
+              <SignupAndSignIn type='login' />} type='login' />
+          } />
+          <Route path='/auth/sign-up' element={
+            <Sign childComponent={
+              <SignupAndSignIn type='sign-up' />} type='sign-up' />
+          } />
+        </Route>
         <Route path='*' element={<Error />} />
       </Route>
     )

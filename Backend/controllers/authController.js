@@ -15,7 +15,7 @@ const signUp = async (req, res, next) => {
     res.cookie('token', token, cookieOption).status(201).json({
         success: true,
         message: 'Register successful',
-        newUser,
+        user : newUser,
         token
     })
 }
@@ -31,7 +31,7 @@ const signin = async (req, res, next) => {
     res.cookie('token', token, cookieOption).status(201).json({
         success: true,
         message: 'Login Successful',
-        existingUser,
+        user : existingUser,
         token
     })
 }
@@ -45,7 +45,7 @@ const googleAuth = async (req, res, next) => {
         return res.cookie('token', cookieOption).status(201).json({
             success: true,
             message: 'Login successful',
-            existingUser,
+            user : existingUser,
             token
         })
     }

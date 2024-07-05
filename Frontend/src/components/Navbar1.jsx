@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { NavLink, Link, Outlet } from 'react-router-dom';
+import { NavLink, Link, Outlet, } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
 import '../App.css';
@@ -22,14 +23,15 @@ const menuItems = [
 ]
 
 export default function Navbar1() {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const userData = useSelector(state => state.user.currentUser);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
     }
     return (
         <>
-            <div className="relative w-full bg-[#edf6f9]">
+            <div className="relative w-full bg-[#edf6f9] py-2">
                 <div className="mx-auto flex max-w-8xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
                     <div className="inline-flex items-center space-x-2">
                         <h1 className='font-bold text-sm sm:text-2xl flex flex-wrap'>
@@ -51,24 +53,36 @@ export default function Navbar1() {
                             ))}
                         </ul>
                     </div>
-                    <div className="hidden space-x-2 lg:block">
-                        <Link to='/auth/sign-up'><button
-                            type="button"
-                            className="rounded-md bg-transparent px-3 py-2 text-md font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                        >
-                            Sign up
-                        </button>
+                    <div className="hidden space-x-2 lg:flex">
+
+                        <Link to='/auth/sign-up'>
+                            {!userData ? <button
+                                type="button"
+                                className="rounded-md bg-transparent px-3 py-2 text-md font-semibold bg-slate-600 border-[1px] border-white text-white hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                            >
+                                Sign up
+                            </button> :
+                                <img src={`${userData.photo}`} className='rounded-full size-10 me-5' />
+                            }
                         </Link>
                         <Link to='/auth/sign-in'>
-                            <button
-                                type="button"
-                                className="rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                            >
-                                Log In
-                            </button>
+                            {
+                                !userData ?
+                                    <button
+                                        type="button"
+                                        className="rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                    >
+                                        Log In
+                                    </button> :
+                                    <button
+                                        type="button"
+                                        className="rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                    >Logout</button>
+                            }
                         </Link>
                     </div>
-                    <div className="lg:hidden">
+                    <div className="lg:hidden flex items-center">
+                        {userData ? (<img src={`${userData.photo}`} className='rounded-full size-7 me-5' />) : null}
                         <RxHamburgerMenu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
                     </div>
                     {isMenuOpen && (
@@ -119,23 +133,32 @@ export default function Navbar1() {
                                             ))}
                                         </nav>
                                     </div>
-                                    <div className="mt-2 space-y-2">
-                                        <Link to='/auth/sign-up'><button
+                                    {!userData ?
+                                        (<div className="mt-2 space-y-2">
+                                            <Link to='/auth/sign-up'>
+                                                <button
+                                                    type="button"
+                                                    className="w-full rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                                >
+                                                    Sign up
+                                                </button>
+                                            </Link>
+                                            <Link to='/auth/sign-in'>
+                                                <button
+                                                    type="button"
+                                                    className="w-full rounded-md bg-black px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black mt-2"
+                                                >
+                                                    Log In
+                                                </button>
+                                            </Link>
+                                        </div>)
+                                        : <button
                                             type="button"
-                                            className="w-full rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                            className="mt-3 w-full rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                                         >
-                                            Sign up
+                                            Logout
                                         </button>
-                                        </Link>
-                                        <Link to='/auth/sign-in'>
-                                            <button
-                                                type="button"
-                                                className="w-full rounded-md bg-black px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black mt-2"
-                                            >
-                                                Log In
-                                            </button>
-                                        </Link>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>

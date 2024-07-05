@@ -1,28 +1,24 @@
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../Redux/userSlice.js';
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase.js';
-import api from './API_Handling';
+import api from './API_Handling.js';
 import { useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
     const dispatch = useDispatch();
     const Navigate = useNavigate();
     return (data, ApiEndpoint) => {
-        const notify = (message) => toast(message);
-        let message = "";
-
         api.post(ApiEndpoint, data)
             .then((response) => {
-                message = response.data.message;
-                toast.success(message);
-                setTimeout(() => Navigate('/'), 3000);
-                dispatch(signInSuccess(response?.data?.existingUser));
+                Navigate('/', { state: { message: response.data.message } });
+                dispatch(signInSuccess(response?.data?.user));
             })
             .catch((e) => {
-                message = e.response?.data.message;
+                setMessage(e.response?.data?.message);
                 toast.error(message);
             });
     }
@@ -44,9 +40,7 @@ const useGoogleAuth = () => {
             }
             api.post('/api/auth/google', googleUserData)
                 .then((response) => {
-                    const message = "Login Successful"
-                    toast.success(message);
-                    setTimeout(() => Navigate('/'), 3000);
+                    Navigate('/', { state: { message: "Welcome Back" } });
                     dispatch(signInSuccess(googleUserData))
                 })
         } catch (error) {
@@ -55,4 +49,4 @@ const useGoogleAuth = () => {
     }
 }
 
-export { useAuth, useGoogleAuth };
+export { useAuth, useGoogleAuth, };

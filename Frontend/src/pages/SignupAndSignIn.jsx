@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FcGoogle } from "react-icons/fc";
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAuth, useGoogleAuth } from '../services/HandleAuth';
+import { useAuth, useGoogleAuth, } from '../services/customHooks.js';
 import '../App.css';
 
 function SignupAndSignIn({ type }) {
@@ -57,7 +56,7 @@ function SignupAndSignIn({ type }) {
             </form>
             <ToastContainer
                 position="top-center"
-                autoClose={2000}
+                autoClose={1000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
