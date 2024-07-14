@@ -3,7 +3,7 @@ import React from 'react'
 function Button({ label, className = "" }) {
   return (
     <div>
-      <button className={className}>{label}</button>
+      <button className={`${className} hover:opacity-70 transition-all duration-150 hover:ease-in active:scale-95`}>{label}</button>
     </div>
   )
 }

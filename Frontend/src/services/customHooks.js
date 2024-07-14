@@ -41,7 +41,7 @@ const useGoogleAuth = () => {
             api.post('/api/auth/google', googleUserData)
                 .then((response) => {
                     Navigate('/', { state: { message: "Welcome Back" } });
-                    dispatch(signInSuccess(googleUserData))
+                    dispatch(signInSuccess(response?.data?.user))
                 })
         } catch (error) {
             console.log("Could not sign in with google", error);

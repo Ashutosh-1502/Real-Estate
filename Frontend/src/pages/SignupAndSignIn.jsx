@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth, useGoogleAuth, } from '../services/customHooks.js';
 import '../App.css';
@@ -49,7 +50,7 @@ function SignupAndSignIn({ type }) {
                     <button
                         onClick={googleAuth}
                         type='button'
-                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[2px]'>
+                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[1px] hover:bg-slate-700 hover:text-white transition-colors duration-300 hover:ease-in active:scale-95'> 
                         <FcGoogle className='me-3 text-3xl' />Sign in With Google
                     </button>
                 </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { NavLink, Link, Outlet, } from 'react-router-dom';
+import { NavLink, Link, Outlet,useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
@@ -25,6 +25,7 @@ const menuItems = [
 export default function Navbar1() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const userData = useSelector(state => state.user.currentUser);
+    const location = useLocation();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
@@ -53,16 +54,16 @@ export default function Navbar1() {
                             ))}
                         </ul>
                     </div>
-                    <div className="hidden space-x-2 lg:flex">
+                    <div className={`space-x-2 ${(location.pathname.includes('/auth') || window.innerWidth < 1024) ? 'hidden' : 'lg:flex'}`}>
 
                         <Link to='/auth/sign-up'>
                             {!userData ? <button
                                 type="button"
-                                className="rounded-md bg-transparent px-3 py-2 text-md font-semibold bg-slate-600 border-[1px] border-white text-white hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                className="rounded-md px-3 py-2 text-md font-semibold bg-slate-800 border-[1px] border-white text-white  hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                             >
                                 Sign up
                             </button> :
-                                <img src={`${userData.photo}`} className='rounded-full size-10 me-5' />
+                                <img src={`${userData.avatar}`} className='rounded-full size-10 me-5' />
                             }
                         </Link>
                         <Link to='/auth/sign-in'>
