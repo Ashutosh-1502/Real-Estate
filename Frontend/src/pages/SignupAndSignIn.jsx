@@ -1,18 +1,20 @@
 import React from 'react';
 import { FcGoogle } from "react-icons/fc";
+import { useLocation } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import Spinner from '../components/Spinner.jsx';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useAuth, useGoogleAuth, } from '../services/customHooks.js';
 import '../App.css';
 
 function SignupAndSignIn({ type }) {
     const handleAuth = useAuth();
     const googleAuth = useGoogleAuth();
+    const location = useLocation();
+
     const schema = yup.object().shape({
         email: yup.lazy(() => {             //Lazy method conditionally check if type is sign-up and then apply validation
             if (type === 'sign-up') {
@@ -28,12 +30,12 @@ function SignupAndSignIn({ type }) {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    const ApiEndpoint = type === 'sign-up' ? '/api/auth/sign-up' : '/api/auth/sign-in';
 
     return (
         <div className='sigup-form mt-5'>
+            <Spinner />
             <form className='flex flex-col gap-5 font-medium'
-                onSubmit={handleSubmit((data) => { handleAuth(data, ApiEndpoint) })}>
+                onSubmit={handleSubmit((data) => { handleAuth(data, `/api${location.pathname}`) })}>
 
                 {type === 'sign-up' ?
                     <Input label="Email" type='email' placeholder='Enter Email Address' {...register("email")} /> :
@@ -50,23 +52,11 @@ function SignupAndSignIn({ type }) {
                     <button
                         onClick={googleAuth}
                         type='button'
-                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[1px] hover:bg-slate-700 hover:text-white transition-colors duration-300 hover:ease-in active:scale-95'> 
+                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[1px] hover:bg-slate-700 hover:text-white transition-colors duration-300 hover:ease-in active:scale-95'>
                         <FcGoogle className='me-3 text-3xl' />Sign in With Google
                     </button>
                 </div>
             </form>
-            <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                transition:Bounce />
         </div>
     )
 }

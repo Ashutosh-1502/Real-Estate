@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { signInSuccess } from '../Redux/userSlice.js';
+import { signInSuccess, setIsLoading } from '../Redux/userSlice.js';
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase.js';
@@ -12,10 +12,12 @@ const useAuth = () => {
     const dispatch = useDispatch();
     const Navigate = useNavigate();
     return (data, ApiEndpoint) => {
+        dispatch(setIsLoading(true));
         api.post(ApiEndpoint, data)
             .then((response) => {
-                Navigate('/', { state: { message: response.data.message } });
+                dispatch(setIsLoading(false));
                 dispatch(signInSuccess(response?.data?.user));
+                Navigate('/', { state: { message: response.data.message } });
             })
             .catch((e) => {
                 setMessage(e.response?.data?.message);

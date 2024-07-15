@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Button({ label, className = "" }) {
+function Button({ label, className = "",onClick = null }) {
   return (
     <div>
-      <button className={`${className} hover:opacity-70 transition-all duration-150 hover:ease-in active:scale-95`}>{label}</button>
+      <button onClick={onClick} className={`${className} hover:opacity-70 transition-all duration-150 hover:ease-in active:scale-95`}>{label}</button>
     </div>
   )
 }

@@ -54,7 +54,7 @@ const googleAuth = async (req, res, next) => {
     const newGoogleUser = new User({ email, username, password: hashedPassword, avatar: photo });
     await newGoogleUser.save();
     const token = setUser(newGoogleUser);
-    existingUser.password = null;
+    newGoogleUser.password = null;
     res.cookie('token', cookieOption).status(201).json({
         success: true,
         message: 'Login Successful',
