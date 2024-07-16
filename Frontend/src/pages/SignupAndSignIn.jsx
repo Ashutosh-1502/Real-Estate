@@ -33,9 +33,11 @@ function SignupAndSignIn({ type }) {
 
     return (
         <div className='sigup-form mt-5'>
-            <Spinner />
+            <Spinner/>
             <form className='flex flex-col gap-5 font-medium'
-                onSubmit={handleSubmit((data) => { handleAuth(data, `/api${location.pathname}`) })}>
+                  onSubmit={handleSubmit((data) => {
+                      handleAuth(data, `/api${location.pathname}`)
+                  })}>
 
                 {type === 'sign-up' ?
                     <Input label="Email" type='email' placeholder='Enter Email Address' {...register("email")} /> :

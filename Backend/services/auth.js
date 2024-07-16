@@ -5,6 +5,7 @@ const cookieOption = {
     secure: process.env.NODE_ENV === 'production',
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     sameSite: 'strict',
+    path: '/',
 }
 
 function setUser(user) {
@@ -14,8 +15,4 @@ function setUser(user) {
     }, process.env.JWT_SECRET);
 }
 
-function getUser(token) {
-
-}
-
-export { setUser, getUser , cookieOption };
+export {setUser, cookieOption};

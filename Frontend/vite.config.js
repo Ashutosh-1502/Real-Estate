@@ -13,6 +13,6 @@ export default defineConfig({
   },
   plugins: [react()],
   optimizeDeps : {
-    include : ['react-redux']
-  }
+    include : ['react-redux','@mui/material']
+  },
 })

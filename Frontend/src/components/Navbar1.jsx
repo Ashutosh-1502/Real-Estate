@@ -56,16 +56,17 @@ export default function Navbar1() {
                     </div>
                     <div className='space-x-2 hidden lg:flex'>
 
-                        <Link to='/auth/sign-up'>
-                            {!userData ? <button
+
+                            {!userData ?
+                                <Link to='/auth/sign-up'><button
                                 type="button"
                                 className={`rounded-md px-3 py-2 text-md font-semibold bg-slate-800 border-[1px] border-white text-white  hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${location.pathname.includes('/auth') && 'hidden'}`}
                             >
                                 Sign up
-                            </button> :
-                                <img src={`${userData.avatar}`} className='rounded-full size-10 me-5' alt='user-photo'/>
+                                </button></Link> :
+                                <Link to='/profile-page'><img src={`${userData.avatar}`} className='rounded-full size-10 me-5' alt='user-photo'/></Link>
                             }
-                        </Link>
+
                         <Link to='/auth/sign-in'>
                             {
                                 !userData ?
@@ -83,7 +84,7 @@ export default function Navbar1() {
                         </Link>
                     </div>
                     <div className="lg:hidden flex items-center">
-                        {userData && <img src={`${userData.avatar}`} className='rounded-full size-7 me-5' alt='user-image' />}
+                        {userData && <Link to='/profile-page'><img src={`${userData.avatar}`} className='rounded-full size-7 me-5' alt='user-image' /></Link>}
                         <RxHamburgerMenu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
                     </div>
                     {isMenuOpen && (

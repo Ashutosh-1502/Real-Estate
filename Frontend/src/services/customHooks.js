@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import { signInSuccess, setIsLoading } from '../Redux/userSlice.js';
-import 'react-toastify/dist/ReactToastify.css';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase.js';
 import api from './API_Handling.js';

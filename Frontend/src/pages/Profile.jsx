@@ -1,10 +1,116 @@
+import {useState, useRef} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {signInSuccess} from "../Redux/userSlice.js";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import api from '../services/API_Handling.js';
+import {app} from "../firebase.js";
+import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
 
 function Profile() {
-  return (
-    <div className='h-svh w-full bg-slate-500'>
-      profile
-    </div>
-  )
+    const dispatch = useDispatch();
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const fileRef = useRef(null);
+
+    const [profile, setProfile] = useState({
+        email: currentUser.email,
+        username: currentUser.username,
+        avatar: currentUser.avatar,
+    });
+
+    const [progressPerc, setProgressPerc] = useState(0);
+
+    const [editProfile, setEditProfile] = useState(false);
+
+    const [updateMessage, setUpdateMessage] = useState({isUpdate: false, message: '', err: false});
+
+    const updateProfile = async () => {
+        if (!Object.keys(profile).every((currVal) => (profile[currVal] === currentUser[currVal]))) {
+            api.patch(`/api/user/updateProfile/${currentUser._id}`, {...profile})
+                .then((response) => {
+                    setProfile({...response})
+                    dispatch(signInSuccess(response));
+                })
+                .catch(() => (setUpdateMessage({isUpdate: false, message: 'Update profile failed', err: true})))
+
+            setUpdateMessage({isUpdate: true, message: "Profile updated successfully.", err: false});
+        }
+        setEditProfile(false);
+    }
+
+    const handleFileUpload = (e) => {
+        const storage = getStorage(app);
+        const fileName = new Date().getTime() + e.target.files[0].name;
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+        uploadTask.on('state_changed', (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setProgressPerc(Math.round(progress));
+            },
+            (error) => {
+                setUpdateMessage({isUpdate: false, message: error.message, err: true});
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    setProfile((prevProfile) => ({...prevProfile , avatar: downloadURL}));
+                });
+            });
+    }
+    // console.log(profile);
+    const handleEditProfile = () => {
+        setEditProfile(true);
+    }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setUpdateMessage({isUpdate: false, message: '', err: false});
+    };
+
+    const vertical = 'top', horizontal = 'center';
+
+    const handleProfile = (e) => {
+        setProfile((currVal) => ({...currVal , [e.target.name] : e.target.value}))
+    }
+
+    return (
+        <>
+            <Snackbar open={updateMessage.isUpdate || updateMessage.err} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{vertical , horizontal}}>
+                <Alert
+                    onClose={handleClose}
+                    severity={`${updateMessage.err} ? "error" : "success"`}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {updateMessage.message}
+                </Alert>
+            </Snackbar>
+            <div className=''>
+                <div className=''>
+                    <input type='file' ref={fileRef} accept='image/*' hidden disabled={!editProfile} onChange={(e) => handleFileUpload(e)} name='avatar' />
+                    <img src={`${profile.avatar}`} alt='profile' className='hover:opacity-75 cursor-pointer' onClick={() => fileRef.current.click()}/>
+                </div>
+                <div>
+                    {`Progress ${progressPerc}`}
+                </div>
+                <div>
+                    <button onClick={editProfile ? updateProfile : handleEditProfile} className='bg-black text-white px-2 py-1'>{editProfile ? 'Update' : 'Edit Profile'}</button>
+                </div>
+                <div>
+                    <h2>Email</h2>
+                    <input type='email' value={profile.email} name='email' onChange={(e) => handleProfile(e)} disabled={!editProfile} />
+                </div>
+                <div>
+                    <h2>Username</h2>
+                    <input type='text' value={profile.username} name='username' onChange={(e) => handleProfile(e)} disabled={!editProfile} />
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default Profile;
