@@ -1,5 +1,3 @@
-import { useState, useRef, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { signInSuccess, setIsLoading } from '../Redux/userSlice.js';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,8 +18,7 @@ const useAuth = () => {
                 Navigate('/', { state: { message: response.data.message } });
             })
             .catch((e) => {
-                setMessage(e.response?.data?.message);
-                toast.error(message);
+                console.log(e);
             });
     }
 }
@@ -33,16 +30,17 @@ const useGoogleAuth = () => {
         try {
             const provider = new GoogleAuthProvider();
             const auth = getAuth(app);
-
             const response = await signInWithPopup(auth, provider);
             const googleUserData = {
                 username: response.user.displayName,
                 email: response.user.email,
                 photo: response.user.photoURL,
             }
+            dispatch(setIsLoading(true));
             api.post('/api/auth/google', googleUserData)
                 .then((response) => {
                     Navigate('/', { state: { message: "Welcome Back" } });
+                    dispatch(setIsLoading(false));
                     dispatch(signInSuccess(response?.data?.user))
                 })
         } catch (error) {

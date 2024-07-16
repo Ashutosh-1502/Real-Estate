@@ -2,12 +2,14 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 
 //importing all the components
+
 import Home from './pages/Home';
 import About from './pages/About';
 import Sign from './pages/Sign';
 import SignupAndSignIn from './pages/SignupAndSignIn';
 import Profile from './pages/Profile';
 import Navbar1 from './components/Navbar1';
+import ErrorPage from './pages/ErrorPage.jsx';
 import { ProtectedProfile, ProtectedSignInAndSignup } from './components/ProtectedRoute';
 
 function App() {
@@ -29,13 +31,13 @@ function App() {
               <SignupAndSignIn type='sign-up' />} type='sign-up' />
           } />
         </Route>
-        <Route path='*' element={<Error />} />
+        <Route path='*' element={<ErrorPage />} />
       </Route>
     )
   )
   return (
     <>
-      <RouterProvider router={router} />
+            <RouterProvider router={router} />
     </>
   )
 }

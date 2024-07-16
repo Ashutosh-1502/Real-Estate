@@ -4,7 +4,7 @@ import React from 'react'
 import { NavLink, Link, Outlet,useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
+import {X} from 'lucide-react';
 import '../App.css';
 
 const menuItems = [
@@ -54,16 +54,16 @@ export default function Navbar1() {
                             ))}
                         </ul>
                     </div>
-                    <div className={`space-x-2 ${(location.pathname.includes('/auth') || window.innerWidth < 1024) ? 'hidden' : 'lg:flex'}`}>
+                    <div className='space-x-2 hidden lg:flex'>
 
                         <Link to='/auth/sign-up'>
                             {!userData ? <button
                                 type="button"
-                                className="rounded-md px-3 py-2 text-md font-semibold bg-slate-800 border-[1px] border-white text-white  hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                className={`rounded-md px-3 py-2 text-md font-semibold bg-slate-800 border-[1px] border-white text-white  hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${location.pathname.includes('/auth') && 'hidden'}`}
                             >
                                 Sign up
                             </button> :
-                                <img src={`${userData.avatar}`} className='rounded-full size-10 me-5' />
+                                <img src={`${userData.avatar}`} className='rounded-full size-10 me-5' alt='user-photo'/>
                             }
                         </Link>
                         <Link to='/auth/sign-in'>
@@ -71,7 +71,7 @@ export default function Navbar1() {
                                 !userData ?
                                     <button
                                         type="button"
-                                        className="rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                        className={`rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${location.pathname.includes('/auth') && 'hidden'}`}
                                     >
                                         Log In
                                     </button> :
@@ -83,7 +83,7 @@ export default function Navbar1() {
                         </Link>
                     </div>
                     <div className="lg:hidden flex items-center">
-                        {userData ? (<img src={`${userData.photo}`} className='rounded-full size-7 me-5' />) : null}
+                        {userData && <img src={`${userData.avatar}`} className='rounded-full size-7 me-5' alt='user-image' />}
                         <RxHamburgerMenu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
                     </div>
                     {isMenuOpen && (
@@ -135,7 +135,7 @@ export default function Navbar1() {
                                         </nav>
                                     </div>
                                     {!userData ?
-                                        (<div className="mt-2 space-y-2">
+                                        (<div className={`mt-2 space-y-2 ${location.pathname.includes('/auth') && 'hidden'}`}>
                                             <Link to='/auth/sign-up'>
                                                 <button
                                                     type="button"

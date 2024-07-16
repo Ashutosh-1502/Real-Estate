@@ -35,3 +35,23 @@
   .divider:not(:empty)::after {
     margin-left: .25em;
   }
+
+  .slide-in{
+      position: fixed;
+      top:0;
+      bottom:0;
+      width: 100%;
+      height: 100vh;
+      background: black;
+      transform-origin: bottom;
+  }
+
+  .slide-out{
+      position: fixed;
+      top:0;
+      bottom:0;
+      width: 100%;
+      height: 100vh;
+      background: black;
+      transform-origin: top;
+  }

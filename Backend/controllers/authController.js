@@ -58,7 +58,7 @@ const googleAuth = async (req, res, next) => {
     res.cookie('token', cookieOption).status(201).json({
         success: true,
         message: 'Login Successful',
-        newGoogleUser,
+        user : newGoogleUser,
         token
     })
 }
