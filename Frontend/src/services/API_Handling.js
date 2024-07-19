@@ -27,12 +27,15 @@ class ApiService {
     get(url, headers = {}) {
         return this.request(url, 'GET', null, headers);
     }
+
     post(url, body, headers = {}) {
         return this.request(url, 'POST', body, headers);
     }
+
     patch(url, body, headers = {}) {
         return this.request(url, 'PATCH', body, headers);
     }
+
     delete(url, headers = {}) {
         return this.request(url, 'DELETE', null, headers);
     }

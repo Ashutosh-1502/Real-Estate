@@ -1,16 +1,16 @@
 import React from 'react';
-import { FcGoogle } from "react-icons/fc";
-import { useLocation } from 'react-router-dom';
+import {FcGoogle} from "react-icons/fc";
+import {useLocation} from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Spinner from '../components/Spinner.jsx';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useAuth, useGoogleAuth, } from '../services/customHooks.js';
+import {useAuth, useGoogleAuth,} from '../services/customHooks.js';
 import '../App.css';
 
-function SignupAndSignIn({ type }) {
+function SignupAndSignIn({type}) {
     const handleAuth = useAuth();
     const googleAuth = useGoogleAuth();
     const location = useLocation();
@@ -27,7 +27,7 @@ function SignupAndSignIn({ type }) {
         // confirmPassword : yup.string().oneOf([yup.ref("password"),null]).required()
     })
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const {register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -36,7 +36,7 @@ function SignupAndSignIn({ type }) {
             <Spinner/>
             <form className='flex flex-col gap-5 font-medium'
                   onSubmit={handleSubmit((data) => {
-                      handleAuth(data, `/api${location.pathname}`)
+                      handleAuth({...data , loginWith: "realState"}, `/api${location.pathname}`)
                   })}>
 
                 {type === 'sign-up' ?
@@ -47,7 +47,8 @@ function SignupAndSignIn({ type }) {
                 <Input label='Password' type='password' placeholder='Enter Password' {...register("password")} />
                 <p className='text-center text-red-400'>{errors.email?.message || errors.username?.message || errors.password?.message}</p>
                 <div className='mt-2'>
-                    <Button label={`${type === 'sign-up' ? 'Get Started' : 'Log in'}`} className='bg-slate-800 w-full h-[40px] text-slate-300' />
+                    <Button label={`${type === 'sign-up' ? 'Get Started' : 'Log in'}`}
+                            className='bg-slate-800 w-full h-[40px] text-slate-300'/>
                 </div>
                 <div className='divider'>or</div>
                 <div>
@@ -55,7 +56,7 @@ function SignupAndSignIn({ type }) {
                         onClick={googleAuth}
                         type='button'
                         className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[1px] hover:bg-slate-700 hover:text-white transition-colors duration-300 hover:ease-in active:scale-95'>
-                        <FcGoogle className='me-3 text-3xl' />Sign in With Google
+                        <FcGoogle className='me-3 text-3xl'/>Sign in With Google
                     </button>
                 </div>
             </form>

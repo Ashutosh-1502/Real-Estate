@@ -11,6 +11,7 @@ const updateUser = async (req, res, next) => {
             avatar: req.body.avatar,
         }
     }, {new: true})
+    console.log(updatedUser);
     updatedUser.password = null;
     res.status(201).json({
         user: updatedUser,

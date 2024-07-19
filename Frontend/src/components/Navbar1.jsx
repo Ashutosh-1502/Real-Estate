@@ -1,11 +1,12 @@
 'use client'
 
 import React from 'react'
-import { NavLink, Link, Outlet,useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RxHamburgerMenu } from "react-icons/rx";
+import {NavLink, Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {RxHamburgerMenu} from "react-icons/rx";
 import {X} from 'lucide-react';
 import '../App.css';
+import {signOut} from "../Redux/userSlice.js";
 
 const menuItems = [
     {
@@ -26,9 +27,16 @@ export default function Navbar1() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const userData = useSelector(state => state.user.currentUser);
     const location = useLocation();
+    const dispatch = useDispatch();
+    const Navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
+    }
+
+    const handleLogout = () => {
+        dispatch(signOut());
+        Navigate('/');
     }
     return (
         <>
@@ -57,15 +65,15 @@ export default function Navbar1() {
                     <div className='space-x-2 hidden lg:flex'>
 
 
-                            {!userData ?
-                                <Link to='/auth/sign-up'><button
-                                type="button"
-                                className={`rounded-md px-3 py-2 text-md font-semibold bg-slate-800 border-[1px] border-white text-white  hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${location.pathname.includes('/auth') && 'hidden'}`}
-                            >
-                                Sign up
+                        {!userData ?
+                            <Link to='/auth/sign-up'><button
+                                    type="button"
+                                    className={`rounded-md px-3 py-2 text-md font-semibold bg-slate-800 border-[1px] border-white text-white  hover:text-black hover:bg-white hover:border-black hover:border-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${location.pathname.includes('/auth') && 'hidden'}`}
+                                >
+                                    Sign up
                                 </button></Link> :
-                                <Link to='/profile-page'><img src={`${userData.avatar}`} className='rounded-full size-10 me-5' alt='user-photo'/></Link>
-                            }
+                            <Link to='/profile-page'><img src={`${userData.avatar}`} className='rounded-full size-10 me-5' alt='user-photo'/></Link>
+                        }
 
                         <Link to='/auth/sign-in'>
                             {
@@ -78,18 +86,25 @@ export default function Navbar1() {
                                     </button> :
                                     <button
                                         type="button"
-                                        className="rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                        className="rounded-md border border-black px-3 py-2 text-md font-semibold
+                                         text-black shadow-sm focus-visible:outline focus-visible:outline-2
+                                          focus-visible:outline-offset-2 focus-visible:outline-black active:scale-95"
+                                        onClick={handleLogout}
                                     >Logout</button>
                             }
                         </Link>
                     </div>
                     <div className="lg:hidden flex items-center">
-                        {userData && <Link to='/profile-page'><img src={`${userData.avatar}`} className='rounded-full size-7 me-5' alt='user-image' /></Link>}
-                        <RxHamburgerMenu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
+                        {userData && <Link to='/profile-page'><img src={`${userData.avatar}`}
+                                                                   className='rounded-full size-7 me-5'
+                                                                   alt='user-image'/></Link>}
+                        <RxHamburgerMenu onClick={toggleMenu} className="h-6 w-6 cursor-pointer"/>
                     </div>
                     {isMenuOpen && (
-                        <div className="absolute inset-x-0 top-0 z-50 origin-top-right transform p-2 transition lg:hidden">
-                            <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                        <div
+                            className="absolute inset-x-0 top-0 z-50 origin-top-right transform p-2 transition lg:hidden">
+                            <div
+                                className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                                 <div className="px-5 pb-6 pt-5">
                                     <div className="flex items-center justify-between">
                                         <div className="inline-flex items-center space-x-2">
@@ -136,7 +151,8 @@ export default function Navbar1() {
                                         </nav>
                                     </div>
                                     {!userData ?
-                                        (<div className={`mt-2 space-y-2 ${location.pathname.includes('/auth') && 'hidden'}`}>
+                                        (<div
+                                            className={`mt-2 space-y-2 ${location.pathname.includes('/auth') && 'hidden'}`}>
                                             <Link to='/auth/sign-up'>
                                                 <button
                                                     type="button"
@@ -156,7 +172,11 @@ export default function Navbar1() {
                                         </div>)
                                         : <button
                                             type="button"
-                                            className="mt-3 w-full rounded-md border border-black px-3 py-2 text-md font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                            className="mt-3 w-full rounded-md border border-black px-3 py-2 text-md
+                                             font-semibold text-black shadow-sm focus-visible:outline
+                                              focus-visible:outline-2 focus-visible:outline-offset-2
+                                               focus-visible:outline-black"
+                                            onClick={handleLogout}
                                         >
                                             Logout
                                         </button>

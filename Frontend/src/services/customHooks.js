@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
-import { signInSuccess, setIsLoading } from '../Redux/userSlice.js';
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
-import { app } from '../firebase.js';
+import { signInSuccess, setIsLoading} from '../Redux/userSlice.js';
+import {GoogleAuthProvider, getAuth, signInWithPopup} from 'firebase/auth';
+import {app} from '../firebase.js';
 import api from './API_Handling.js';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const useAuth = () => {
     const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const useAuth = () => {
             .then((response) => {
                 dispatch(setIsLoading(false));
                 dispatch(signInSuccess(response?.data?.user));
-                Navigate('/', { state: { message: response.data.message } });
+                Navigate('/', {state: {message: response.data.message}});
             })
             .catch((e) => {
                 console.log(e);
@@ -34,11 +34,12 @@ const useGoogleAuth = () => {
                 username: response.user.displayName,
                 email: response.user.email,
                 photo: response.user.photoURL,
+                loginWith: "google",
             }
             dispatch(setIsLoading(true));
             api.post('/api/auth/google', googleUserData)
                 .then((response) => {
-                    Navigate('/', { state: { message: "Welcome Back" } });
+                    Navigate('/', {state: {message: "Welcome Back"}});
                     dispatch(setIsLoading(false));
                     dispatch(signInSuccess(response?.data?.user))
                 })
@@ -48,4 +49,4 @@ const useGoogleAuth = () => {
     }
 }
 
-export { useAuth, useGoogleAuth, };
+export {useAuth, useGoogleAuth,};
