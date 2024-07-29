@@ -1,0 +1,124 @@
+#hero-bg {
+    background-image: url("Images/Hero-bg.webp");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 55.5vh;
+    background-position: center center;
+    background-size: cover;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    #hero-bg {
+        background-size: cover;
+        height: 50vh;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+@media (orientation: landscape) and (max-width: 768px) {
+    #hero-bg {
+        height: 70vh;
+    }
+}
+
+.facilities {
+    width: 395px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 32px;
+    border: 1px solid rgb(205, 205, 211);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 485px;
+}
+
+.facilities-inner {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.facilities h1 {
+    color: #000;
+    font-weight: 650;
+    font-size: 1.7rem;
+}
+
+.facilities button {
+    margin-top: 12px;
+}
+
+#home-button {
+    border: 1.5px solid rgb(0, 65, 217);
+    color: rgba(0, 65, 217,0.9);
+    border-radius: 12px;
+    background-color: white;
+    font-size: 15px;
+    font-weight: 550;
+    letter-spacing: 0.4px;
+    box-sizing: border-box;
+    font-family: Inter, "Adjusted Arial", Tahoma, Geneva, sans-serif;
+    transition: all 0.5s ease-in-out;
+}
+
+#home-button:hover {
+    background-color: #caf0f8;
+}
+
+#home-button:active {
+    scale: 0.9;
+}
+
+.buy-home {
+    width: 160px;
+    height: 160px;
+}
+
+@media (width <= 599px) {
+    .buy-home {
+        width: 120px;
+        height: 120px;
+    }
+
+    .facilities {
+        flex-direction: column;
+        width: 100%;
+        height: 485px;
+    }
+}
+
+@media (width < 1024px) and (width >= 600px) {
+    .facilities {
+        flex-direction: row;
+        width: 95%;
+        height: 233px;
+        column-gap: 28px;
+    }
+
+    .facilities-inner {
+        justify-content: center;
+        align-items: start;
+        text-align: start;
+    }
+}
+
+@media (width >= 1024px) {
+    .facilities p {
+        height: 7em;
+        margin-top: 3px;
+    }
+
+    .facilities button {
+        margin-top: auto;
+    }
+}
