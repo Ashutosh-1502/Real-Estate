@@ -20,7 +20,7 @@ const signUp = async (req, res, next) => {
     })
 }
 
-const signin = async (req, res, next) => {
+const signIn = async (req, res, next) => {
     const {username, password} = req.body;
     const existingUser = await User.findOne({username});
     if (!existingUser || !bcrypt.compareSync(password, existingUser.password))
@@ -63,4 +63,11 @@ const googleAuth = async (req, res, next) => {
     })
 }
 
-export {signUp, signin, googleAuth};
+const signOut = async (req, res, next) => {
+    res.clearCookie('accessToken').status(200).json({
+        error: false,
+        message: 'User has been logged out!',
+    })
+}
+
+export {signUp, signIn, googleAuth, signOut};

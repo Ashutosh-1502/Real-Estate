@@ -15,11 +15,11 @@ const userSlice = createSlice({
         setIsLoading: (state, action) => {
             state.isLoading = action.payload;
         },
-        signOut: (state, action) => {
+        signOutSuccess: (state, action) => {
             state.currentUser = null;
         }
     }
 })
 
-export const {signInSuccess, setIsLoading, signOut} = userSlice.actions;
+export const {signInSuccess, setIsLoading, signOutSuccess} = userSlice.actions;
 export default userSlice.reducer;

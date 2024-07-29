@@ -3,12 +3,12 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 
 //importing all the components
 
-import Home from './pages/Home';
+import Home from './pages/HomePage/Home.jsx';
 import About from './pages/About';
 import Sign from './pages/Sign';
 import SignupAndSignIn from './pages/SignupAndSignIn';
 import Profile from './pages/Profile';
-import Navbar1 from './components/Navbar1';
+import Navbar1 from './components/Navbar/Navbar1.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import { ProtectedProfile, ProtectedSignInAndSignup } from './components/ProtectedRoute';
 

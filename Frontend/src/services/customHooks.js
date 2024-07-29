@@ -1,5 +1,6 @@
-import { useDispatch } from 'react-redux';
-import { signInSuccess, setIsLoading} from '../Redux/userSlice.js';
+import {useEffect, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {signInSuccess, setIsLoading} from '../Redux/userSlice.js';
 import {GoogleAuthProvider, getAuth, signInWithPopup} from 'firebase/auth';
 import {app} from '../firebase.js';
 import api from './API_Handling.js';
@@ -49,4 +50,27 @@ const useGoogleAuth = () => {
     }
 }
 
-export {useAuth, useGoogleAuth,};
+const useIntersectionObserver = (options) => {
+    const [isIntersecting, setIsIntersecting] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            setIsIntersecting(entry.isIntersecting);
+        }, options);
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [options]);
+
+    return [ref, isIntersecting];
+};
+
+export {useAuth, useGoogleAuth, useIntersectionObserver};

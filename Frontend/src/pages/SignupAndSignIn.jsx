@@ -20,14 +20,14 @@ function SignupAndSignIn({type}) {
             if (type === 'sign-up') {
                 return yup.string().email().required('Email is required');
             }
-            return yup.mixed().notRequired();  //if not then it not validate the email field (assumed that  it is not present in form)
+            return yup.mixed().notRequired();  //if not then it not validate the email field (assumed that it is not present in form)
         }),
         username: yup.string().required("Username is required"),
         password: yup.string().min(8).max(20).required("Password is required"),
         // confirmPassword : yup.string().oneOf([yup.ref("password"),null]).required()
     })
 
-    const {register, handleSubmit, formState: { errors } } = useForm({
+    const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -36,7 +36,7 @@ function SignupAndSignIn({type}) {
             <Spinner/>
             <form className='flex flex-col gap-5 font-medium'
                   onSubmit={handleSubmit((data) => {
-                      handleAuth({...data , loginWith: "realState"}, `/api${location.pathname}`)
+                      handleAuth({...data, loginWith: "realState"}, `/api${location.pathname}`)
                   })}>
 
                 {type === 'sign-up' ?
@@ -45,7 +45,8 @@ function SignupAndSignIn({type}) {
                 }
                 <Input label='Username' type='text' placeholder='Enter Username' {...register("username")} />
                 <Input label='Password' type='password' placeholder='Enter Password' {...register("password")} />
-                <p className='text-center text-red-400'>{errors.email?.message || errors.username?.message || errors.password?.message}</p>
+                <p className='text-center text-red-400'>
+                    {errors.email?.message || errors.username?.message || errors.password?.message}</p>
                 <div className='mt-2'>
                     <Button label={`${type === 'sign-up' ? 'Get Started' : 'Log in'}`}
                             className='bg-slate-800 w-full h-[40px] text-slate-300'/>
@@ -55,7 +56,9 @@ function SignupAndSignIn({type}) {
                     <button
                         onClick={googleAuth}
                         type='button'
-                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[1px] hover:bg-slate-700 hover:text-white transition-colors duration-300 hover:ease-in active:scale-95'>
+                        className='flex justify-center items-center text-lg w-full bg-slate-100 py-2 rounded border-[1px]
+                         hover:bg-slate-700 hover:text-white transition-all duration-300 hover:ease-in
+                          active:scale-95'>
                         <FcGoogle className='me-3 text-3xl'/>Sign in With Google
                     </button>
                 </div>
